@@ -1,5 +1,5 @@
 # Algoritmos e Experimentos
-> ♾️ Repositório para armazenamento de algoritmos e experimentos matemáticos desenvolvidos em Java, Javascript, Python e Kotlin.
+> ♾️ Repositório para armazenamento de algoritmos e experimentos desenvolvidos em Java, Javascript, Python e Kotlin.
 
 ## Sumário
 - [Sobre](#sobre)
@@ -8,7 +8,7 @@
 - [Autor](#autor)
 
 ## Sobre
-Este repositório irá conter alguns experimentos e algoritmos desenvolvidos para realizar a aplicação de algum conceito matemático.
+Este repositório irá conter alguns experimentos e algoritmos desenvolvidos para realizar a aplicação de algum conceito matemático e outros assuntos.
 
 ## Instação
 ```bash
