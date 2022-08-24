@@ -9,46 +9,44 @@
 # |utilização de Semáforos.                                                                                             |
 # ----------------------------------------------------------------------------------------------------------------------|
 from threading import Thread
-from utils import close_poem, get_cancao_do_exilio, open_poem
+from time import sleep
+from utils import get_cancao_do_exilio
 
-MAX_STACKS = 4
-FILENAME = "poem.txt"
+MAX_STACKS = 5
 
 isEOF = False
+poem = []
 
 
 def execute_producer_thread(text: str):
-    global isEOF
-    file = open_poem(FILENAME, 'w')
-    lines = text.split('\n')
-    for line in lines:
-        file_data = file.read()
-        current_rows_length = len(file_data.split('\n'))
-        while current_rows_length == MAX_STACKS:
-            file_data = file.read()
-            current_rows_length = len(file_data.split('\n'))
-        file.write(line)
+    global isEOF, poem
+    splitted_text = text.split(' ')
+    for text_set in splitted_text:
+        print('[Producer] Current State: ' + str(poem))
+        while len(poem) == MAX_STACKS:
+            print("[Producer] Awaiting...")
+        poem.append(text_set + ' ')
+        sleep(0.5)
     isEOF = True
-    close_poem(file)
 
 
 def execute_consumer_thread():
-    global isEOF
-    file = open_poem(FILENAME, 'r')
-    file_data = file.read()
-    current_rows_length = len(file_data.split('\n'))
-    while not isEOF:
-        while current_rows_length == 1:
-            file_data = file.read()
-            current_rows_length = len(file_data.split('\n'))
-        print(file_data)
-    close_poem(file)
+    global isEOF, poem
+    result = ''
+    while not isEOF or len(poem) > 0:
+        print('[Consumer] Current State: ' + str(poem))
+        while len(poem) == 0:
+            print("[Consumer] Awaiting...")
+        result += poem[0]
+        sleep(0.5)
+        poem.pop(0)
+    print(result)
 
 
 def main():
-    poem = get_cancao_do_exilio()
+    poem_text = get_cancao_do_exilio()
     producer = Thread(target=execute_producer_thread,
-                      args=[poem])
+                      args=[poem_text])
     consumer = Thread(target=execute_consumer_thread)
     producer.start()
     consumer.start()
