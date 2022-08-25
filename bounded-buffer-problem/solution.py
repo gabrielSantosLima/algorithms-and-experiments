@@ -8,8 +8,10 @@
 # |Caso as Threads não estejam sincronizadas, o processo de produção/consumo pode entrar em conflito. Sendo necessário a|
 # |utilização de Semáforos.                                                                                             |
 # ----------------------------------------------------------------------------------------------------------------------|
+# Biblioteca do Python para utilizar a funcionalidade de Threads
 from threading import Thread, Semaphore
-from time import sleep
+from time import sleep  # Biblioteca do Python para utilizar funcionalidades de tempo
+# Arquivo local que possui funções de utilidade
 from utils import get_cancao_do_exilio
 
 
@@ -21,7 +23,7 @@ empty = Semaphore(5)
 
 
 def execute_producer_thread(text: str):
-    global isEOF, poem
+    global isEOF, poem, empty, full, semaphore
     splitted_text = text.split(' ')
     for text_set in splitted_text:
         print('[Producer] Current State: ' + str(poem))
@@ -35,7 +37,7 @@ def execute_producer_thread(text: str):
 
 
 def execute_consumer_thread():
-    global isEOF, poem
+    global isEOF, poem, empty, full, semaphore
     result = ''
     while not isEOF or len(poem) > 0:
         print('[Consumer] Current State: ' + str(poem))
