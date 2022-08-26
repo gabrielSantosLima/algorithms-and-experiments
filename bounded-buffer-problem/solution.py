@@ -39,7 +39,7 @@ def execute_producer_thread(text: str):
 def execute_consumer_thread():
     global isEOF, poem, empty, full, semaphore
     result = ''
-    while not isEOF or len(poem) > 0:
+    while not isEOF:
         print('[Consumer] Current State: ' + str(poem))
         full.acquire()
         semaphore.acquire()
