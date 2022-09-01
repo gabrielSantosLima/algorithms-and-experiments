@@ -7,68 +7,69 @@
 # |(recurso compartilhado). Porém, esse problema é identificado quando uma thread de leitura e outra de escrita precisam|
 # |executar concorrentemente, fazendo necessário a utilização de semáforos.                                             |
 # ----------------------------------------------------------------------------------------------------------------------|
-from threading import Thread, Semaphore
+from threading import Semaphore, Thread
 from time import sleep
 
 from utils import sort_daily_task
 
-poem = []
-readerSemaphore = Semaphore()
-writerSemaphore = Semaphore()
-resourceSemaphore = Semaphore()
-queueSemaphore = Semaphore()
-lenghtOfReaders = 0
-lenghtOfWriters = 0
+daily_tasks = []
+reader_semaphore = Semaphore()
+writer_semaphore = Semaphore()
+resource_semaphore = Semaphore()
+queue_semaphore = Semaphore()
+readers_length = 0
+writers_length = 0
 
 
 def execute_reader_thread(thread_title="Padrão"):
-    global poem, readerSemaphore, writerSemaphore, lenghtOfReaders, resourceSemaphore, queueSemaphore
+    global daily_tasks, reader_semaphore, writer_semaphore, readers_length, resource_semaphore, queue_semaphore
     while True:
-        queueSemaphore.acquire()
-        readerSemaphore.acquire()
-        lenghtOfReaders += 1
-        if lenghtOfReaders == 1:
+        queue_semaphore.acquire()
+        reader_semaphore.acquire()
+        readers_length += 1
+        if readers_length == 1:
             print("Locking writer")
-            resourceSemaphore.acquire()
-        readerSemaphore.release()
-        queueSemaphore.release()
+            resource_semaphore.acquire()
+        reader_semaphore.release()
+        queue_semaphore.release()
 
         sleep(1)
         print(f"[Reader - {thread_title}] Reading...")
-        for day, task in poem:
+        for day, task in daily_tasks:
             print(f"> Task of {day} is '{task}'")
 
-        readerSemaphore.acquire()
-        lenghtOfReaders -= 1
-        if lenghtOfReaders == 0:
+        reader_semaphore.acquire()
+        readers_length -= 1
+        if readers_length == 0:
             print("Releasing writer")
-            resourceSemaphore.release()
-        readerSemaphore.release()
+            resource_semaphore.release()
+        reader_semaphore.release()
 
 
 def execute_writer_thread():
-    global poem, writerSemaphore, queueSemaphore, lenghtOfWriters, resourceSemaphore
+    global daily_tasks, writer_semaphore, queue_semaphore, writers_length, resource_semaphore
     while True:
-        writerSemaphore.acquire()
-        lenghtOfWriters += 1
-        if lenghtOfWriters == 1:
-            queueSemaphore.acquire()
-        writerSemaphore.release()
+        writer_semaphore.acquire()
+        writers_length += 1
+        if writers_length == 1:
+            queue_semaphore.acquire()
+        writer_semaphore.release()
 
-        resourceSemaphore.acquire()
+        resource_semaphore.acquire()
         sleep(1)
         print("[Writer] Writing...")
-        if len(poem) == 7:
-            poem = []
+        if len(daily_tasks) == 7:
+            daily_tasks = []
         daily_task = sort_daily_task()
-        poem.append(daily_task)
-        resourceSemaphore.release()
+        daily_tasks.append(daily_task)
+        resource_semaphore.release()
 
-        writerSemaphore.acquire()
-        lenghtOfWriters -= 1
-        if lenghtOfWriters == 0:
-            queueSemaphore.release()
-        writerSemaphore.release()
+        writer_semaphore.acquire()
+        writers_length -= 1
+        if writers_length == 0:
+            queue_semaphore.release()
+        writer_semaphore.release()
+        sleep(1)
 
 
 def main():
