@@ -2,19 +2,41 @@ from enum import Enum
 
 
 class ChessPieceEnum(Enum):
-    PAWN = 0
-    KNIGHT = 1
-    BISHOP = 2
-    ROOK = 3
-    QUEEN = 4
-    KING = 5
+    PAWN = ''
+    KNIGHT = 'C'
+    BISHOP = 'B'
+    ROOK = 'T'
+    QUEEN = 'D'
+    KING = 'R'
 
 class ColorEnum(Enum):
     BLACK = 0
     WHITE = 1
 
-class ChessPiece:
-    def __init__(self, type: ChessPieceEnum, coordinate: tuple[int, int], color: ColorEnum):
-        self.type: ChessPieceEnum = type
-        self.color: ColorEnum = color
-        self.coordinate: tuple[int, int] = coordinate
+class ChessObject:
+    def __init__(self, x: int, y: int, width: float, height: float, board_coordinate: tuple[int, int]):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.board_coordinate = board_coordinate
+
+class Square(ChessObject):
+    def __init__(self, x: int, y: int, width: float, height: float, board_coordinate: tuple[int, int]):
+        super().__init__(x,y,width,height, board_coordinate)
+
+
+class ChessPiece(ChessObject):
+    def __init__(
+        self, 
+        type: ChessPieceEnum, 
+        color: ColorEnum, 
+        x: int, 
+        y: int, 
+        width: float, 
+        height: float, 
+        board_coordinate: tuple[int, int]
+    ):
+        super().__init__(x,y,width,height, board_coordinate)
+        self.type = type
+        self.color = color
