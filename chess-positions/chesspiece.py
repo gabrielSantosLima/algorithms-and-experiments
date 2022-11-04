@@ -25,7 +25,6 @@ class Square(ChessObject):
     def __init__(self, x: int, y: int, width: float, height: float, board_coordinate: tuple[int, int]):
         super().__init__(x,y,width,height, board_coordinate)
 
-
 class ChessPiece(ChessObject):
     def __init__(
         self, 

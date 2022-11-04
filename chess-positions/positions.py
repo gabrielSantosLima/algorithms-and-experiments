@@ -1,9 +1,13 @@
-from chesspiece import ChessObject, ChessPiece, ChessPieceEnum, ColorEnum
+from chesspiece import (ChessObject, ChessPiece, ChessPieceEnum, ColorEnum,
+                        Square)
 from positionbuilder import PositionBuilder
 from utils import get_chess_board_size, get_coordinate, get_notation
 
 
-def get_positions_of(chess_board: list[list[ChessObject]], chess_piece: ChessPiece) -> list[tuple[int, int]]:
+def get_positions_of(
+    chess_board: list[list[ChessObject]], 
+    chess_piece: ChessPiece
+) -> list[tuple[int, int]]:
     x,y = chess_piece.board_coordinate
     chess_board_size = get_chess_board_size()
     position_builder = PositionBuilder((x,y), chess_board_size, chess_board)
@@ -26,7 +30,9 @@ def get_positions_of(chess_board: list[list[ChessObject]], chess_piece: ChessPie
                 .down_right(2, 1)\
                 .down_right(1, 2)
         case ChessPieceEnum.BISHOP: 
-            position_builder.in_diagonal()
+            position_builder\
+                .in_primary_diagonal()\
+                .in_secondary_diagonal()
         case ChessPieceEnum.ROOK: 
             position_builder\
                 .in_column()\
@@ -35,7 +41,8 @@ def get_positions_of(chess_board: list[list[ChessObject]], chess_piece: ChessPie
             position_builder\
                 .in_column()\
                 .in_row()\
-                .in_diagonal()
+                .in_primary_diagonal()\
+                .in_secondary_diagonal()
         case ChessPieceEnum.KING: 
             position_builder\
                 .up()\
@@ -48,6 +55,18 @@ def get_positions_of(chess_board: list[list[ChessObject]], chess_piece: ChessPie
                 .down_right()
     return position_builder.build()
 
+def find_pieces(chess_board: list[list[ChessObject]], color:ColorEnum=None) -> list[ChessPiece]:
+    pieces: list[ChessPiece] = []
+    for row in chess_board:
+        for chess_object in row:
+            if isinstance(chess_board, ChessPiece):
+                if color != None and chess_object.color == color:
+                    pieces.append(chess_object)
+                elif color == None:
+                    pieces.append(chess_object)
+    return pieces 
+
+# Temp
 def print_board(chess_board: list[list[ChessObject]]):
     for row in range(8):
         for column in range(8):
@@ -63,24 +82,40 @@ if __name__ == '__main__':
     for row in range(8):
         board.append([])
         for column in range(8):
-            board[row].append(ChessObject(row * 10, column * 10, 10, 10, (column, row)))
+            board[row].append(Square(row * 10, column * 10, 10, 10, (column, row)))
     
-    board[0][0] = ChessPiece(ChessPieceEnum.ROOK, ColorEnum.BLACK, 10, 10, 10, 10, get_coordinate('a8'))
-    chess_piece = ChessPiece(
-        ChessPieceEnum.BISHOP, 
+    board[0][0] = ChessPiece(
+        ChessPieceEnum.ROOK, 
+        ColorEnum.BLACK, 
+        10, 
+        10, 
+        10, 
+        10, 
+        get_coordinate('a8')
+    )
+    board[2][2] = ChessPiece(
+        ChessPieceEnum.ROOK, 
+        ColorEnum.BLACK, 
+        10, 
+        10, 
+        10, 
+        10, 
+        get_coordinate('c6')
+    )
+    board[5][2] = ChessPiece(
+        ChessPieceEnum.KING, 
         ColorEnum.WHITE,
         30,
         30,
         10,
         10,
-        get_coordinate('d5')
+        get_coordinate('c3')
     )
-    board[3][3] = chess_piece
     
-    positions = get_positions_of(board, chess_piece)
+    positions = get_positions_of(board, board[5][2])
     positions_notations = list(
         map(lambda coordinate: get_notation(coordinate[0], coordinate[1]), positions)
     )
     print_board(board)
-    print(positions, end='')
+    print(positions)
     print(positions_notations)
