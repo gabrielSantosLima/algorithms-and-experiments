@@ -1,33 +1,28 @@
-# Algoritmos e Experimentos
-> ♾️ Repositório para armazenamento de algoritmos e experimentos desenvolvidos em Java, Javascript, Python e Kotlin.
+![](./assets/logo.png)
 
-## Sumário
-- [Sobre](#sobre)
-- [Instalação](#instação)
-- [Como Contribuir](#como-contribuir)
-- [Autor](#autor)
+# Algorithms and Experiments
 
-## Sobre
-Este repositório irá conter alguns experimentos e algoritmos desenvolvidos para realizar a aplicação de algum conceito matemático e outros assuntos.
+> ♾️ Repository of algorithms and experiments built in Java, Javascript, Python and Kotlin.
 
-## Instação
+## Roadmap
+
+- [Installation](#installation)
+- [Author](#author)
+
+## Installation
+
 ```bash
-git clone https://github.com/gabrielSantosLima/algoritmos-e-experimentos.git # Clone o projeto
+git clone https://github.com/gabrielSantosLima/algorithms-and-experiments.git # Clone the project
 
-cd algoritmos-e-experimentos # Mude para o diretório do projeto
+cd algorithms-and-experiments # Change directory
 
-mkdir nome-do-seu-experimento # Crie uma pasta para o seu experimento
+# specific settings... - if its necessary!
 ```
 
-## Como Contribuir
+> Each folder contains an unique experiment then may require specific settings.
 
-Sinta-se livre para contribuir com este repositório podendo seguir os seguintes passos:
-1. [Crie um fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) pessoal do projeto
-2. Crie uma pasta específica para adicionar o seu experimento/algoritmo. Ex: 
-3. Adicione todos os arquivos relacionados a este experimento/algoritmo dentro da pasta criada
-4. Divirta-se! :)
+## Author
 
-## Autor
 <p style="display: flex; align-items: center; gap: 8px; font-size: 16px;">
   <img src="https://github.com/gabrielSantosLima.png" width=50 alt="Gabriel Lima">
   <a href="https://github.com/gabrielSantosLima">Gabriel Lima - Técnico em Informática💻</a>
