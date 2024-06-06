@@ -6,7 +6,7 @@ int length_path(PATH *path)
         return 0;
     int count = 0;
     path = path->next;
-    while (path != NULL)
+    while (path->next != NULL)
     {
 
         count++;

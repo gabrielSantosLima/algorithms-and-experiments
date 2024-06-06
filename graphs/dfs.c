@@ -11,40 +11,40 @@ void add_path_recursive_dfs(PATH *path, int *parents, int index)
     add_path(path, index, 1);
 }
 
+int time_dfs = 0;
+
 void DFS_visit(GRAPH *graph,
                VERTEX *source,
-               int target,
-               int _time,
                int *colors,
-               int *initial_time,
-               int *final_time,
+               int *s_time,
+               int *f_time,
                int *parents)
 {
     int u = source->index;
-    int time = _time + 1;
-    initial_time[u] = time;
+    time_dfs++;
+    s_time[u] = time_dfs;
     colors[u] = GRAY;
     ADJ_VERTEX *aux = source->adjacents;
+    printf("> u=%d\n", u);
     while (aux != NULL)
     {
         int v = aux->index;
         if (colors[v] == WHITE)
         {
+            printf("> v=%d\n", v);
             parents[v] = u;
             DFS_visit(graph,
                       find_vertex(graph, v),
-                      target,
-                      time,
                       colors,
-                      initial_time,
-                      final_time,
+                      s_time,
+                      f_time,
                       parents);
         }
         aux = aux->next;
     }
     colors[u] = BLACK;
-    time++;
-    final_time[u] = time;
+    time_dfs++;
+    f_time[u] = time_dfs;
 }
 
 PATH *DFS(GRAPH *graph, int source, int target)
@@ -53,9 +53,8 @@ PATH *DFS(GRAPH *graph, int source, int target)
         return NULL;
 
     int length = graph->v;
-    int time = 0;
     int colors[length];
-    int initial_time[length], final_time[length];
+    int s_time[length], f_time[length];
     int parents[length];
 
     for (int i = 0; i < length; i++)
@@ -64,17 +63,17 @@ PATH *DFS(GRAPH *graph, int source, int target)
         parents[i] = -1;
     }
 
-    VERTEX *aux = graph->vertex;
+    VERTEX *aux = find_vertex(graph, source);
     while (aux != NULL)
     {
         int u = aux->index;
         if (colors[u] == WHITE)
-            DFS_visit(graph, aux, target, time, colors, initial_time, final_time, parents);
+            DFS_visit(graph, aux, colors, s_time, f_time, parents);
         aux = aux->next;
     }
 
     for (int i = 0; i < length; i++)
-        printf("[i=%d] COLOR=%d, PARENT=%d\n", i, colors[i], parents[i]);
+        printf("[i=%d] COLOR=%d, PARENT=%d, TIME=%d/%d\n", i, colors[i], parents[i], s_time[i], f_time[i]);
 
     PATH *path = create_path();
     add_path_recursive_dfs(path, parents, target);
