@@ -14,17 +14,18 @@ void add_path_recursive(PATH *path, int *parents, int index)
 PATH *BFS(GRAPH *graph, int source, int target)
 {
     VERTEX *s = find_vertex(graph, source);
-    if (s == NULL)
+    if (s == NULL || graph == NULL || graph->v == 0)
         return NULL;
 
-    int visited[graph->v];
-    int parents[graph->v];
-    int distance[graph->v];
-    int queue[graph->v];
+    int length = graph->v;
+    int visited[length];
+    int parents[length];
+    int distance[length];
+    int queue[length];
 
     int end = 0;
 
-    for (int i = 0; i < graph->v; i++)
+    for (int i = 0; i < length; i++)
     {
         visited[i] = 0;
         parents[i] = -1;
@@ -59,6 +60,9 @@ PATH *BFS(GRAPH *graph, int source, int target)
         }
         visited[u] = BLACK;
     }
+
+    for (int i = 0; i < length; i++)
+        printf("[i=%d] COLOR=%d, PARENT=%d\n", i, visited[i], parents[i]);
 
     PATH *path = create_path();
     add_path_recursive(path, parents, target);

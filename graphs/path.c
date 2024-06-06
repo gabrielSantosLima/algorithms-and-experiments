@@ -33,7 +33,7 @@ void add_path(PATH *path, int index, int weight)
         aux = aux->next;
     aux->next = create_path(index, weight);
     aux->index = index;
-    aux->weight = index;
+    aux->weight = weight;
 }
 
 void print_path(PATH *path)
