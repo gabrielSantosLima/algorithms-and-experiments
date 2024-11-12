@@ -1,6 +1,7 @@
 #include "graph.h"
 #include "bfs.h"
 #include "dfs.h"
+#include "dijkstra.h"
 
 int main()
 {
@@ -47,6 +48,29 @@ int main()
     PATH *path_dfs = DFS(graph, 0, 6);
     printf("MENOR CAMINHO: %d passos.\n", length_path(path_dfs));
     print_path(path_dfs);
+
+    printf("\n\n==== DIJKSTRA ====\n");
+    GRAPH *graph2 = create_graph();
+    add_vertex(graph2, 0);
+    add_vertex(graph2, 1);
+    add_vertex(graph2, 2);
+    add_vertex(graph2, 3);
+
+    add_edge(graph2, 0, 1, 50);
+    add_edge(graph2, 0, 2, 8);
+    add_edge(graph2, 1, 0, 50);
+    add_edge(graph2, 1, 2, 9);
+    add_edge(graph2, 1, 3, 2);
+    add_edge(graph2, 2, 0, 8);
+    add_edge(graph2, 2, 1, 9);
+    add_edge(graph2, 2, 3, 40);
+    add_edge(graph2, 3, 1, 2);
+    add_edge(graph2, 3, 2, 6);
+
+    print_graph(graph2);
+
+    PATH *path_dks = dijkstra(graph2, 0, 3);
+    print_path(path_dks);
 
     return 0;
 }
